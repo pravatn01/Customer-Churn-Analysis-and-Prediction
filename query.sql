@@ -1,78 +1,9 @@
---creating table to import data from excel file
-create table customer_data (
-    customer_id varchar(50) primary key,
-    gender varchar(10),
-    age integer,
-    married varchar(3),
-    state varchar(50),
-    number_of_referrals integer,
-    tenure_in_months integer,
-    value_deal varchar(20),
-    phone_service varchar(3),
-    multiple_lines varchar(3),
-    internet_service varchar(3),
-    internet_type varchar(20),
-    online_security varchar(3),
-    online_backup varchar(3),
-    device_protection_plan varchar(3),
-    premium_support varchar(3),
-    streaming_tv varchar(3),
-    streaming_movies varchar(3),
-    streaming_music varchar(3),
-    unlimited_data varchar(3),
-    contract varchar(20),
-    paperless_billing varchar(3),
-    payment_method varchar(50),
-    monthly_charge numeric,
-    total_charges numeric,
-    total_refunds numeric,
-    total_extra_data_charges numeric,
-    total_long_distance_charges numeric,
-    total_revenue numeric,
-    customer_status varchar(10),
-    churn_category varchar(50),
-    churn_reason varchar(255)
-);
---checking data from table
-select *
-from customer_data;
--- analyzing the distribution of distinct values within multiple columns
-select gender,
-    count(*)::numeric * 100.0 / (
-        select count(*)
-        from customer_data
-    ) as percentage_of_gender
-from customer_data
-group by gender;
-select married,
-    count(*)::numeric * 100.0 / (
-        select count(*)
-        from customer_data
-    ) as percentage_of_married
-from customer_data
-group by married;
-select state,
-    count(*)::numeric * 100.0 / (
-        select count(*)
-        from customer_data
-    ) as percentage_of_state
-from customer_data
-group by state
-order by percentage_of_state desc;
-select customer_status,
-    count(*)::numeric * 100.0 / (
-        select count(*)
-        from customer_data
-    ) as percentage_of_status
-from customer_data
-group by customer_status;
-select churn_category,
-    count(*)::numeric * 100.0 / (
-        select count(*)
-        from customer_data
-    ) as percentage_of_churn
-from customer_data
-group by churn_category;
+create database db_churn
+
+use db_churn
+
+select * from customer_data
+
 -- counting null entries across all columns
 select sum(
         case
@@ -94,10 +25,10 @@ select sum(
     ) as null_age_count,
     sum(
         case
-            when married is null then 1
+            when relationship_status is null then 1
             else 0
         end
-    ) as null_married_count,
+    ) as null_relationship_status_count,
     sum(
         case
             when state is null then 1
@@ -124,70 +55,70 @@ select sum(
     ) as null_value_deal_count,
     sum(
         case
-            when phone_service is null then 1
+            when voice_assistance is null then 1
             else 0
         end
-    ) as null_phone_service_count,
+    ) as null_voice_assistance_count,
     sum(
         case
-            when multiple_lines is null then 1
+            when dual_connectivity is null then 1
             else 0
         end
-    ) as null_multiple_lines_count,
+    ) as null_dual_connectivity_count,
     sum(
         case
-            when internet_service is null then 1
+            when data_service is null then 1
             else 0
         end
-    ) as null_internet_service_count,
+    ) as null_data_service_count,
     sum(
         case
-            when internet_type is null then 1
+            when data_plan is null then 1
             else 0
         end
-    ) as null_internet_type_count,
+    ) as null_data_plan_count,
     sum(
         case
-            when online_security is null then 1
+            when cyber_protection is null then 1
             else 0
         end
-    ) as null_online_security_count,
+    ) as null_cyber_protection_count,
     sum(
         case
-            when online_backup is null then 1
+            when data_backup is null then 1
             else 0
         end
-    ) as null_online_backup_count,
+    ) as null_data_backup_count,
     sum(
         case
-            when device_protection_plan is null then 1
+            when gadget_protection is null then 1
             else 0
         end
-    ) as null_device_protection_count,
+    ) as null_gadget_protection_count,
     sum(
         case
-            when premium_support is null then 1
+            when vip_support is null then 1
             else 0
         end
-    ) as null_premium_support_count,
+    ) as null_vip_support_count,
     sum(
         case
-            when streaming_tv is null then 1
+            when video_streaming is null then 1
             else 0
         end
-    ) as null_streaming_tv_count,
+    ) as null_video_streaming_count,
     sum(
         case
-            when streaming_movies is null then 1
+            when cinema_streaming is null then 1
             else 0
         end
-    ) as null_streaming_movies_count,
+    ) as null_cinema_streaming_count,
     sum(
         case
-            when streaming_music is null then 1
+            when audio_streaming is null then 1
             else 0
         end
-    ) as null_streaming_music_count,
+    ) as null_audio_streaming_count,
     sum(
         case
             when unlimited_data is null then 1
@@ -196,16 +127,16 @@ select sum(
     ) as null_unlimited_data_count,
     sum(
         case
-            when contract is null then 1
+            when service_commitment is null then 1
             else 0
         end
-    ) as null_contract_count,
+    ) as null_service_commitment_count,
     sum(
         case
-            when paperless_billing is null then 1
+            when digital_invoicing is null then 1
             else 0
         end
-    ) as null_paperless_billing_count,
+    ) as null_digital_invoicing_count,
     sum(
         case
             when payment_method is null then 1
@@ -267,30 +198,31 @@ select sum(
         end
     ) as null_churn_reason_count
 from customer_data;
+
 -- creating a new table with updated customer information, replacing nulls with default values
-create table updated_customer_data as
-select customer_id,
+SELECT 
+    customer_id,
     gender,
     age,
-    married,
+    relationship_status,
     state,
     number_of_referrals,
     tenure_in_months,
-    coalesce(value_deal, 'none') as filled_value_deal,
-    phone_service,
-    coalesce(multiple_lines, 'no') as filled_multiple_lines,
-    internet_service,
-    coalesce(internet_type, 'none') as filled_internet_type,
-    coalesce(online_security, 'no') as filled_online_security,
-    coalesce(online_backup, 'no') as filled_online_backup,
-    coalesce(device_protection_plan, 'no') as filled_device_protection,
-    coalesce(premium_support, 'no') as filled_premium_support,
-    coalesce(streaming_tv, 'no') as filled_streaming_tv,
-    coalesce(streaming_movies, 'no') as filled_streaming_movies,
-    coalesce(streaming_music, 'no') as filled_streaming_music,
-    coalesce(unlimited_data, 'no') as filled_unlimited_data,
-    contract,
-    paperless_billing,
+    ISNULL(value_deal, 'None') AS value_deal,
+    voice_assistance,
+    ISNULL(dual_connectivity, 'No') AS dual_connectivity,
+    data_service,
+    ISNULL(data_plan, 'None') AS data_plan,
+    ISNULL(cyber_protection, 'No') AS cyber_protection,
+    ISNULL(data_backup, 'No') AS data_backup,
+    ISNULL(gadget_protection, 'No') AS gadget_protection,
+    ISNULL(vip_support, 'No') AS vip_support,
+    ISNULL(video_streaming, 'No') AS video_streaming,
+    ISNULL(cinema_streaming, 'No') AS cinema_streaming,
+    ISNULL(audio_streaming, 'No') AS audio_streaming,
+    ISNULL(unlimited_data, 'No') AS unlimited_data,
+    service_commitment,
+    digital_invoicing,
     payment_method,
     monthly_charge,
     total_charges,
@@ -299,18 +231,69 @@ select customer_id,
     total_long_distance_charges,
     total_revenue,
     customer_status,
-    coalesce(churn_category, 'others') as filled_churn_category,
-    coalesce(churn_reason, 'others') as filled_churn_reason
-from customer_data;
---checking updated table
-select *
-from updated_customer_data;
---creating required views for random forest classfier
-create view vw_churned as
-select *
-from updated_customer_data
-where customer_status in ('churned', 'stayed');
-create view vw_joined as
-select *
-from updated_customer_data
-where customer_status = 'joined';
+    ISNULL(churn_category, 'Others') AS churn_category,
+    ISNULL(churn_reason, 'Others') AS churn_reason
+
+INTO [db_churn].[dbo].[cleaned_customer_data]
+
+FROM [db_churn].[dbo].[customer_data];
+
+--checking distribution of distinct values in columns
+select 
+    gender,
+    count(*) * 100.0 / (
+        select count(*)
+        from cleaned_customer_data
+    ) as percentage_of_gender
+from cleaned_customer_data
+group by gender;
+
+select 
+    relationship_status as married,
+    count(*) * 100.0 / (
+        select count(*)
+        from cleaned_customer_data
+    ) as percentage_of_married
+from cleaned_customer_data
+group by relationship_status;
+
+select 
+    state,
+    count(*) * 100.0 / (
+        select count(*)
+        from cleaned_customer_data
+    ) as percentage_of_state
+from cleaned_customer_data
+group by state
+order by percentage_of_state desc;
+
+select 
+    customer_status,
+    count(*) * 100.0 / (
+        select count(*)
+        from cleaned_customer_data
+    ) as percentage_of_status
+from cleaned_customer_data
+group by customer_status;
+
+select 
+    churn_category,
+    count(*) * 100.0 / (
+        select count(*)
+        from cleaned_customer_data
+    ) as percentage_of_churn
+from cleaned_customer_data
+group by churn_category;
+
+--creating views
+create view vw_ChurnData as
+	select * from cleaned_customer_data 
+	where customer_status in ('Churned', 'Stayed');
+
+create view vw_JoinData as
+	select * from cleaned_customer_data 
+	where customer_status = 'Joined'
+
+--checking views
+select * from vw_ChurnData	
+select * from vw_JoinData
