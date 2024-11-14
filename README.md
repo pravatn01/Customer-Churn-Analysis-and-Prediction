@@ -46,5 +46,5 @@ This project analyzes customer churn patterns and predicts at-risk new joiners t
 ---
 
 ## Dashboards & Access
-- ![Analysis Dashboard](dashboard photos/analysis.png)
-- ![Prediction Dashboard](dashboard photos/prediction.png)
+- ![Analysis Dashboard](dashboard%20photos/analysis.png)
+- ![Prediction Dashboard](dashboard%20photos/prediction.png)
