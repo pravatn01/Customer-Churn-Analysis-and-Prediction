@@ -48,5 +48,5 @@ This power bi project analyzes customer churn patterns and predicts at-risk new 
 ## Dashboards Preview and Link
   ![Analysis Dashboard](dashboard%20photos/analysis.png)
   ![Prediction Dashboard](dashboard%20photos/prediction.png)
-- **Power BI Dashboard Link: https://app.powerbi.com/view?r=eyJrIjoiYmU4NmVmZmYtYmQ5Yy00NThjLTg2MGMtOGRiODEzYmI2YTMyIiwidCI6IjA4MzYyZWVjLTY4MjItNGJiMC05YjQ5LTVmNjk2NjI1Mzk3OSIsImMiOjEwfQ%3D%3D**
+- **Power BI Dashboard Link: [Churn Prediction and Analysis Dashboard](https://app.powerbi.com/view?r=eyJrIjoiYmU4NmVmZmYtYmQ5Yy00NThjLTg2MGMtOGRiODEzYmI2YTMyIiwidCI6IjA4MzYyZWVjLTY4MjItNGJiMC05YjQ5LTVmNjk2NjI1Mzk3OSIsImMiOjEwfQ%3D%3D)**
 
