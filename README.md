@@ -1,4 +1,4 @@
-# 📊 Churn Prediction and Analysis Dashboard
+# 📊 Churn Analysis and Prediction Dashboard
 
 ## Project Overview
 This power bi project analyzes customer churn patterns and predicts at-risk new joiners to support proactive retention strategies. Telecommunications companies can leverage these insights to engage high-risk customers effectively.
